@@ -1,5 +1,13 @@
 package by.parf;
 
+import by.parf.bean.Registration;
+import by.parf.protocol.Command;
+import by.parf.protocol.Request;
+import by.parf.protocol.Response;
+import by.parf.register.RegisterService;
+import by.parf.register.RegisterServiceImpl;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -8,6 +16,9 @@ import java.net.Socket;
  * Created by Kiryl_Parfiankou on 9/2/2016.
  */
 public class ServerRunner {
+
+    private static ObjectMapper mapper = new ObjectMapper();
+    private static RegisterService registerService = new RegisterServiceImpl();
 
     public static void main(String[] args){
 
@@ -24,13 +35,18 @@ public class ServerRunner {
 
             String inputLine;
 
-            while ((inputLine = in.readLine()) != null) {
+            inputLine = in.readLine();
 
-                if ("exit".equals(inputLine)) {
-                    break;
-                }
-                System.out.println(inputLine);
+            Request request = mapper.readValue(inputLine, Request.class);
+            if (Command.REGISTER.equals(request.getHeader().getCommand())) {
+                Registration registration = registerService.register(null);
+                System.out.println("Is register..." + registration.toString());
+                Response response = registerService.createRegisterResponse(registration);
+                System.out.println("Id: " + response.getBody());
+                out.println(mapper.writeValueAsString(response));
             }
+
+            System.out.println(inputLine);
 
         } catch (IOException e) {
             e.printStackTrace();

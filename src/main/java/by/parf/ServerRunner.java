@@ -44,6 +44,8 @@ public class ServerRunner {
                 Response response = registerService.createRegisterResponse(registration);
                 System.out.println("Id: " + response.getBody());
                 out.println(mapper.writeValueAsString(response));
+            } else {
+                System.out.println(request.getHeader().getCommand().toString() + request.getBody());
             }
 
             System.out.println(inputLine);

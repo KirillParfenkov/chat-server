@@ -26,8 +26,6 @@
     </target>
 
     <target name="dist" depends="compile" description="generate the distribution">
-        <mkdir dir="${dist}/lib"/>
-        <copydir src="${lib}" dest="${dist}/lib"/>
         <jar jarfile="${dist}/Chat-Server-${DSTAMP}.jar" basedir="${build}">
             <manifest>
                 <attribute name="Main-Class" value="by.parf.ServerRunner"/>

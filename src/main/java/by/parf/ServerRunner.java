@@ -6,9 +6,11 @@ import by.parf.protocol.Request;
 import by.parf.protocol.Response;
 import by.parf.register.RegisterService;
 import by.parf.register.RegisterServiceImpl;
+import by.parf.server.ChatServer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.*;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -26,7 +28,14 @@ public class ServerRunner {
 
         System.out.println("Server started on " + portNumber);
 
-        try (
+        try {
+            (new Thread(new ChatServer(InetAddress.getLocalHost(), portNumber))).start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        /* try (
                 ServerSocket server = new ServerSocket(portNumber);
                 Socket client = server.accept();
                 PrintStream out = new PrintStream(client.getOutputStream(), true, "UTF-8");
@@ -52,8 +61,6 @@ public class ServerRunner {
 
         } catch (IOException e) {
             e.printStackTrace();
-        }
-
-        System.out.println("Server was stopped.");
+        }*/
     }
 }

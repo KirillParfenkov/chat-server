@@ -1,6 +1,7 @@
 package by.parf.register;
 
 import by.parf.bean.Registration;
+import by.parf.protocol.Request;
 import by.parf.protocol.Response;
 
 import javax.lang.model.element.PackageElement;
@@ -10,9 +11,8 @@ import javax.lang.model.element.PackageElement;
  */
 public interface RegisterService {
 
-    Registration register(String name);
     Registration get(String id);
     Registration find();
 
-    Response createRegisterResponse(Registration registration);
+    Response processRegistration(Request request);
 }

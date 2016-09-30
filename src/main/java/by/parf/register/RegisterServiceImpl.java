@@ -1,10 +1,7 @@
 package by.parf.register;
 
 import by.parf.bean.Registration;
-import by.parf.protocol.Command;
-import by.parf.protocol.Header;
-import by.parf.protocol.Response;
-import by.parf.protocol.Status;
+import by.parf.protocol.*;
 import by.parf.register.dao.RegisterDao;
 import by.parf.register.dao.RegisterDaoImpl;
 
@@ -24,12 +21,6 @@ public class RegisterServiceImpl implements RegisterService {
     }
 
     @Override
-    public Registration register(String name) {
-        Registration registration = registerDao.save(name);
-        return registration;
-    }
-
-    @Override
     public Registration get(String id) {
         return null;
     }
@@ -40,10 +31,31 @@ public class RegisterServiceImpl implements RegisterService {
     }
 
     @Override
-    public Response createRegisterResponse(Registration registration) {
+    public Response processRegistration(Request request) {
+
+        Command command = request.getHeader().getCommand();
+        Response response;
+        if (Command.REGISTER.equals(command)) {
+            String name = request.getBody().toString();
+            Registration registration = registerDao.save(name);
+            response = createRegisterResponse(registration);
+        } else {
+            response = createErrorResponse();
+        }
+        return response;
+    }
+
+    private Response createRegisterResponse(Registration registration) {
         return new Response(
                 new Header(Command.REGISTER),
                 registration.getId(),
                 Status.SUCCESS);
+    }
+
+    private Response createErrorResponse() {
+        return new Response(
+                new Header(Command.REGISTER),
+                null,
+                Status.ERROR);
     }
 }

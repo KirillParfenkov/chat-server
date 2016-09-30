@@ -5,6 +5,8 @@ import by.parf.protocol.Command;
 import by.parf.protocol.Header;
 import by.parf.protocol.Response;
 import by.parf.protocol.Status;
+import by.parf.register.dao.RegisterDao;
+import by.parf.register.dao.RegisterDaoImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,17 +17,26 @@ import java.util.UUID;
  */
 public class RegisterServiceImpl implements RegisterService {
 
-    private List<Registration> registrations;
+    private RegisterDao registerDao;
 
     public RegisterServiceImpl() {
-        this.registrations = new ArrayList<>();
+        this.registerDao = new RegisterDaoImpl();
     }
 
     @Override
     public Registration register(String name) {
-        Registration registration = new Registration(UUID.randomUUID().toString(), name);
-        registrations.add(registration);
+        Registration registration = registerDao.save(name);
         return registration;
+    }
+
+    @Override
+    public Registration get(String id) {
+        return null;
+    }
+
+    @Override
+    public Registration find() {
+        return null;
     }
 
     @Override

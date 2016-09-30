@@ -5,7 +5,8 @@ package by.parf.protocol;
  */
 public enum Command {
     REGISTER,
-    EXIT,
-    MESSAGE,
-    STATUS
+    UPDATE,
+    CREATE,
+    POST,
+    GET
 }

@@ -26,10 +26,13 @@ public class ServerRunner {
 
         int portNumber = Integer.parseInt(args[0]);
 
-        System.out.println("Server started on " + portNumber);
-
         try {
+            InetAddress host = InetAddress.getLocalHost();
             (new Thread(new ChatServer(InetAddress.getLocalHost(), portNumber))).start();
+
+            System.out.println("Server started on " + portNumber);
+            System.out.println(host);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -48,8 +51,8 @@ public class ServerRunner {
 
             Request request = mapper.readValue(inputLine, Request.class);
             if (Command.REGISTER.equals(request.getHeader().getCommand())) {
-                Registration registration = registerService.register(null);
-                System.out.println("Is register..." + registration.toString());
+                Registration registration = registerService.save(null);
+                System.out.println("Is save..." + registration.toString());
                 Response response = registerService.createRegisterResponse(registration);
                 System.out.println("Id: " + response.getBody());
                 out.println(mapper.writeValueAsString(response));

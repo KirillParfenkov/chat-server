@@ -127,7 +127,6 @@ public class ChatServer implements Runnable {
     protected void read(SelectionKey key) throws IOException {
 
         SocketChannel channel = (SocketChannel) key.channel();
-        key.cancel();
         CharsetDecoder decoder = Charset.forName("UTF-8").newDecoder();
         this.readBuffer.clear();
 
